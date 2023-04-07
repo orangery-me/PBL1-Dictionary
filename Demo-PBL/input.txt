@@ -1,0 +1,15 @@
+alleviate;suy giam;verb
+cut;cat;verb
+cry;khoc;verb
+cat;meo;noun
+dream;giac mo;noun
+dog;cho;noun
+energy;nang luong;noun
+fly;bay;verb
+fake;gia;adj
+harry styles;ca si;noun
+hello;xin chao;verb
+lock;khoa;noun,verb
+one;mot;noun
+savage;hoang da;adj
+synthetic;tong hop;adj

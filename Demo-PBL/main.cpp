@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <time.h>
 #include <stdlib.h>
 
@@ -16,7 +17,11 @@ struct Node{
     char type[MAX_LEN];
     Node *next;
 };
-
+void DeleteBuff(char word[]){
+    int i=0;
+    while (word[i] != '\n') i++;
+    word[i]='\0';
+}
 Node * HashTable[TABLE_SIZE];
 Node *CreateNode(char[], char[], char[]);
 int HashFunction( char[]);
@@ -64,26 +69,34 @@ int main(){
         switch (choice){
         case 0:
             break;
-        case 1:
+        case 1:{
             char vocab[MAX_LEN], meaning[MAX_LEN], type[MAX_LEN];
             fflush(stdin);
             printf("Nhap tu moi: ");
-            gets(vocab);
+            fgets(vocab,MAX_LEN,stdin);
+            DeleteBuff(vocab);
             if (FindAWord(vocab) != NULL ){
                 printf("Tu nay da co trong tu dien!\n");
                 break;
             }
+
             printf("Nhap nghia cua tu: ");
-            gets(meaning);
+            fgets(meaning,MAX_LEN,stdin);
+            DeleteBuff(meaning);
+
             printf("Nhap kieu cua tu: ");
-            gets(type);
+            fgets(type,MAX_LEN,stdin);
+            DeleteBuff(type);
+
             InsertNodeToHashTable(CreateNode(vocab,meaning,type));
             printf("\n\nBan da them tu THANH CONG!\n\n");
             break;
+        }
         case 2:
             fflush(stdin);
             printf("Nhap tu can xoa: ");
-            gets(word);
+            fgets(word,MAX_LEN,stdin);
+            DeleteBuff(word);
             if (DeleteNode(word)){
             printf("DA XOA TU THANH CONG !\n");
             }
@@ -95,7 +108,8 @@ int main(){
             fflush(stdin); 
             char editWord[MAX_LEN];
             printf("Hay nhap tu can thay doi thong tin: ");
-            gets(editWord);
+            fgets(editWord,MAX_LEN,stdin);
+            DeleteBuff(editWord);
             Change(editWord);
             break;
         case 4:
@@ -104,12 +118,13 @@ int main(){
         case 5:{
             fflush(stdin);
             printf("Nhap tu can tra nghia: ");
-            gets(word);
+            fgets(word,MAX_LEN,stdin);
+            DeleteBuff(word);
             printf("\n");
             Node* res= FindAWord(word);
 
             if (res != NULL)
-            printf("%-20s: %-20s %-10s \n", res->vocab, res->meaning, res->type);
+            printf("--->  %-20s: %-20s %-10s \n", res->vocab, res->meaning, res->type);
             else
             printf("---> KHONG CO TU NAY TRONG TU DIEN\n");
             break;
@@ -124,7 +139,8 @@ int main(){
             fflush(stdin);
             printf("Nhap cum tu can tim kiem: ");
             char phrase[MAX_LEN];
-            gets(phrase);
+            fgets(phrase,MAX_LEN,stdin);
+            DeleteBuff(phrase);
             printf("Cac tu vung chua cum tu tren la:\n");
             Searching(phrase);
             break;
@@ -148,10 +164,11 @@ int HashFunction( char newword[]){
 
 void ReadFile(){
     FILE *p= fopen("./input.txt","r");
+
     if (p)
-    for (;;)
+    while ( !feof(p) )
     {
-            char line[MAX_LEN]={},vocab[MAX_LEN]={}, meaning[MAX_LEN]={}, type[MAX_LEN]={};
+            char line[MAX_LEN],vocab[MAX_LEN],meaning[MAX_LEN],type[MAX_LEN];
             Node *temp = (Node *)malloc(sizeof *temp);
 
             fgets(line, MAX_LEN, p);
@@ -162,35 +179,32 @@ void ReadFile(){
                 vocab[j++]= line[i];
                 i++;
             }
-            strcpy(temp->vocab, vocab);
+            strncpy(temp->vocab, vocab,j--);
             // Tach nghia
             i++; j=0;
             while (line[i] != ';'){
                 meaning[j++]= line[i];
                 i++;
             }
-            strcpy(temp->meaning, meaning);
+            strncpy(temp->meaning, meaning,j--);
             // Tách từ loại
             i++; j=0;
             while (line[i] != '\n'){
                 type[j++]= line[i];
                 i++;
             }
-            strcpy(temp->type, type);
+            strncpy(temp->type, type,j--);
             InsertNodeToHashTable(temp);
             NumberOfWords++;
 
-            if (feof(p))
-            {
-                break;
-            }
+           
     }
 
     fclose(p);
 }
 
 void WriteFile(){
-    FILE *p= fopen("./output.txt","w");
+    FILE *p= fopen("./input.txt","w");
     for (int i = 0; i < TABLE_SIZE; ++i){
         if (HashTable[i] == NULL)
             continue;
@@ -234,9 +248,30 @@ void InsertNodeToHashTable(Node *newword){
 
 }
 
+Node* FindAWord(char word[]){
+    int index = HashFunction(word);
+    // printf("%d %s     %s",index,HashTable[index]->vocab,word);
+
+    if (HashTable[index] != NULL)
+    {
+        Node *temp = HashTable[index];
+        // printf("%d",strcmp(temp->vocab, word) );
+
+        while (temp != NULL && strcmp(temp->vocab, word) != 0){
+            temp = temp->next;
+        }
+        // printf("%s\n",temp->vocab);
+
+        if (temp != NULL){
+            return temp;
+        }
+    }
+    return NULL;
+}
+
 void Change(char editWord[]){
 
-    Node *changeNode= new Node();
+    Node *changeNode= (Node *)malloc(sizeof (*changeNode));
     if (FindAWord(editWord) == NULL ){
         printf("Khong co tu nay trong tu dien\n");
         return;
@@ -259,11 +294,13 @@ void Change(char editWord[]){
     switch (choice)
     {
     case 1:
-        gets(word);
+        fgets(word,MAX_LEN,stdin);
+        DeleteBuff(word);
         strcpy(changeNode->meaning, word);
         break;
     case 2:
-        gets(word);
+        fgets(word,MAX_LEN,stdin);
+        DeleteBuff(word);
         strcpy(changeNode->type, word);
         break;
     }
@@ -275,7 +312,6 @@ bool DeleteNode(char word[]){
     int index= HashFunction(word);
 
     if (HashTable[index]==NULL){
-        printf("KHONG CO TU NAY TRONG TU DIEN !\n");
         return false;
     }
 
@@ -302,24 +338,6 @@ bool DeleteNode(char word[]){
     }
     NumberOfWords--;  
     return true;
-}
-
-Node* FindAWord(char word[]){
-    int index = HashFunction(word);
-
-    if (HashTable[index] != NULL)
-    {
-        Node *temp = HashTable[index];
-
-        while (temp != NULL && strcmp(temp->vocab, word) != 0){
-            temp = temp->next;
-        }
-
-        if (temp != NULL){
-            return temp;
-        }
-    }
-    return NULL;
 }
 
 void Searching(char phrase[]){
@@ -409,7 +427,7 @@ void PlayGame(){
         else{
             Node *temp=HashTable[i];
             while (temp != NULL){
-                char YourWord[MAX_LEN]={}; 
+                char YourWord[MAX_LEN]; 
                 char AskedWord[MAX_LEN]; strcpy(AskedWord,temp->vocab);
 
                 int x=rand()% strlen(AskedWord);

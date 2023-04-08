@@ -250,17 +250,14 @@ void InsertNodeToHashTable(Node *newword){
 
 Node* FindAWord(char word[]){
     int index = HashFunction(word);
-    // printf("%d %s     %s",index,HashTable[index]->vocab,word);
 
     if (HashTable[index] != NULL)
     {
         Node *temp = HashTable[index];
-        // printf("%d",strcmp(temp->vocab, word) );
 
         while (temp != NULL && strcmp(temp->vocab, word) != 0){
             temp = temp->next;
         }
-        // printf("%s\n",temp->vocab);
 
         if (temp != NULL){
             return temp;

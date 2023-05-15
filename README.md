@@ -14,4 +14,12 @@ Các chức năng chính của chương trình :
 
 + Xóa một từ vựng nào đó. 
 
-- Chơi trò chơi đố chữ: Chương trình chọn ngẫu nhiên một từ vựng nào đó.Xóa một cách ngẫu nhiên một ký tự trong từ và yêu cầu người chơi nhập vào ký tự bị thiếu. Nếu người chơi nhập vào một ký tự làm thành một từ hợp lệ (nghĩa là có trong tự điển) thì chương trình hiển thị thông tin về từ đó, người chơi sẽ được tính điểm. Còn nếu người chơi nhập vào ký tự không làm thành từ hợp lệ, thì chương trình sẽ hiển thị thông báo lỗi: ‘Không có từ này trong tiếng Anh’ .
+- Chơi trò chơi đố chữ: Chương trình chọn ngẫu nhiên một từ vựng nào đó.Xóa một cách ngẫu nhiên một
+
+ ký tự trong từ và yêu cầu người chơi nhập vào ký tự bị thiếu. Nếu người chơi nhập vào một ký tự làm 
+ 
+ thành một từ hợp lệ (nghĩa là có trong tự điển) thì chương trình hiển thị thông tin về từ đó, người 
+ 
+ chơi sẽ được tính điểm. Còn nếu người chơi nhập vào ký tự không làm thành từ hợp lệ, thì chương 
+ 
+ trình sẽ hiển thị thông báo lỗi: ‘Không có từ này trong tiếng Anh’ .

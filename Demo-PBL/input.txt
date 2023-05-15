@@ -1,17 +1,22 @@
-alleviate;suy giam;verb
+radio;radio;noun
+letter;la thu;noun
 bee;con ong;noun
-bug;bo;noun
-cut;cat;verb
-dog;cho;noun
-dream;giac mo;noun
+happy;hanh phuc;adj
+bucket;cai xo;noun
+lock;khoa;noun,verb
+ready;san sang;adj
+savage;hoang da;adj
+mouse;chuot;noun
+hello;xin chao;verb
 energy;nang luong;noun
+town;thi tran;noun
+synthetic;tong hop;adj
+tomorrow;ngay mai;noun
+one;mot;noun
+butterfly;con buom;noun
+dog;cho;noun
+bug;bo;noun
 fake;gia;adj
 fly;bay;verb
-happy;hanh phuc;adj
-hello;xin chao;verb
-harry styles;ca si;noun
-lock;khoa;noun,verb
-mouse;chuot;noun
-one;mot;noun
-synthetic;tong hop;adj
-savage;hoang da;adj
+dream;giac mo;noun
+alleviate;suy giam;verb

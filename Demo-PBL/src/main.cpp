@@ -44,6 +44,7 @@ int main(){
     {
         choice=-1;
         system("clear");
+
         printf("\n\n\t\tTU DIEN TIENG ANH\n\n");
         printf("\t1.   Them tu moi \n");
         printf("\t2.   Xoa di mot tu\n");
@@ -121,8 +122,8 @@ int main(){
             printf("\n Level 1: 5 cau\n Level 2: 10 cau\n Level 3: 15 cau\n");
             int level; 
             do{
-            printf("\tHay chon level tro choi: ");
-            scanf("%d",&level);
+                printf("\tHay chon level tro choi: ");
+                scanf("%d",&level);
             }
             while (level <0 || level >3);
             PlayGame(level*5);
@@ -402,9 +403,10 @@ void PlayGame(int numberOfQuestions){
             listLen++;
             temp= temp-> next;
         }
+        printf("%d",listLen);
 
         int y= rand()%listLen;
-        temp = hashTable[nums[x]];
+        temp = hashTable[nums[cnt-1]];
         while (y){
             temp= temp->next;
             y--;
@@ -427,7 +429,7 @@ void PlayGame(int numberOfQuestions){
 
         fflush(stdin);
         printf("\nDien tu con thieu: ");
-        answer[random_index] = getchar();
+        answer[random_index]= getchar();
 
         if (Search(answer) != NULL){
             printf("\t---> BAN TRA LOI DUNG!\n\n\n");

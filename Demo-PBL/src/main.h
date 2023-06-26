@@ -6,10 +6,11 @@
 
 #define MAX_LEN 200
 #define TABLE_SIZE 9997
-#define MAX_CHOICE 8
+#define MAX_CHOICE 9
 typedef struct Node Node;
 
 int nums[TABLE_SIZE];
+int numSize=0;
 int numberOfWords=0;// so luong tu trong tu dien
 struct Node{
     char vocab[MAX_LEN];
@@ -37,7 +38,7 @@ int HashFunction( char newword[]){
 
     while (newword[i] != '\0'){
         c = newword[i];
-        hash = (hash  *base+ c) % TABLE_SIZE; 
+        hash = (hash  *base+ c) % TABLE_SIZE +1; 
         i++;
     }
     return hash;
@@ -49,7 +50,7 @@ void InsertNodeToHashTable(Node *newword){
     if (hashTable[index] != NULL)
         newword->next= hashTable[index];
     else
-        nums[numberOfWords]=index; // Thong ke nhung hashCode da duoc su dung
+        nums[++numSize]=index; // Thong ke nhung hashCode da duoc su dung
     
     hashTable[index]= newword;
 
@@ -97,7 +98,7 @@ void ReadFile(){
 }
 
 void WriteFile(){
-    FILE *p= fopen("./input2.txt","w");
+    FILE *p= fopen("./input.txt","w");
     for (int i = 0; i < TABLE_SIZE; ++i){
         if (hashTable[i] == NULL)
             continue;
@@ -111,6 +112,7 @@ void WriteFile(){
         }
     }
     fclose(p);
+   
 
 }
 
@@ -157,14 +159,14 @@ void Update(char editWord[]){
     
     
     printf("%-20s %-20s %-20s\n", changeNode->vocab, changeNode->meaning, changeNode->type);
-    printf("\nBan can cap nhap lai noi dung nao cua tu?\n");
-    printf("1. Nghia cua tu\n");
-    printf("2. Kieu cua tu\n");
-    printf("Nhap lua chon: ");
+    printf("\nBạn cần cập nhập lại nội dung nào của từ?\n");
+    printf("1. Nghĩa của từ\n");
+    printf("2. Kiểu của từ\n");
+    printf("\t** Nhập lựa chọn: ");
 
     int choice; 
     scanf("%d", &choice);
-    printf("Hay nhap thay doi:  \n");
+    printf("\t** Hãy nhập thay đổi:  \n");
     char word[MAX_LEN];
     fflush(stdin);
     switch (choice){
@@ -180,7 +182,7 @@ void Update(char editWord[]){
         strcpy(changeNode->type, word);
         break;
     }
-    printf("\nCap nhap lai tu dien THANH CONG !\n");
+    printf("\n\tCập nhập lại từ điển THÀNH CÔNG !\n");
     return;
 }
 
@@ -223,7 +225,7 @@ void PrintHashTable(){
     printf("+");
 
 
-    printf("\n| %-6s| %-30s| %-30s | %-54s |\n","STT","Tu Vung","Loai tu","Nghia cua tu");
+    printf("\n| %-6s| %-30s| %-30s | %-54s |\n","STT","Tu vung","Loai tu","Nghia cua tu");
     printf("| %-6s| %-30s| %-30s | %-54s |\n"," "," "," "," ");
     printf("|");
     for (int i=0; i<=128; ++i)
@@ -274,14 +276,18 @@ void swap(int &a, int &b){
 }
 
 void PlayGame(int numberOfQuestions){
+    if (numberOfQuestions > numSize){
+        printf("\tKhông đủ số lượng từ !\n");
+        return;
+    }
 
     srand(time(NULL));
-    printf("\t\t\n\nTRO CHOI BAT DAU!\n\n\n");
+    printf("\t\t\n\n** TRÒ CHƠI BẮT ĐẦU **\n\n\n");
     int cnt=1, right=0;
 
     while (cnt <= numberOfQuestions){
 
-        int x = (rand() % (numberOfWords - cnt + 1)) + cnt;
+        int x = (rand() % (numSize - cnt + 1)) + cnt;
         Node *temp = hashTable[nums[x]];
 
         // Lấy chiều dài của linkedList
@@ -305,7 +311,7 @@ void PlayGame(int numberOfQuestions){
 
         // Chọn 1 vị trí ngẫu nhiên để ẩn đi
         int random_index= rand() %strlen(askedWord);
-        printf("Cau %d:\t\t",cnt);
+        printf("Câu %d:\t\t",cnt);
         for (int k = 0; k < strlen(askedWord); ++k){
             if (k == random_index)
                 printf("_");
@@ -314,15 +320,15 @@ void PlayGame(int numberOfQuestions){
         }
 
         fflush(stdin);
-        printf("\nDien tu con thieu: ");
+        printf("\n** Điền từ còn thiếu: ");
         answer[random_index]= getchar();
 
         if (Search(answer) != NULL){
-            printf("\n\t BAN TRA LOI DUNG!\n\n");
+            printf("\n\t BẠN ĐÃ TRẢ LỜI ĐÚNG!\n\n");
             right++;
         }
         else
-            printf("\t BAN TRA LOI SAI!\n\n");
+            printf("\t BẠN ĐÃ TRẢ LỜI SAI!\n\n");
 
         printf("\t --->  %-20s: %-20s \t (%s) \n\n\n", temp->vocab, temp->meaning, temp->type);
 
@@ -331,6 +337,52 @@ void PlayGame(int numberOfQuestions){
         
     }
 
-    printf("\nBAN DA TRA LOI DUNG %d/%d CAU!\n",right,numberOfQuestions);
+    printf("\nBẠN ĐÃ TRẢ LỜI ĐÚNG %d/%d CÂU!\n",right,numberOfQuestions);
 }
 
+void TimKiem(char word[]){
+     printf("+");
+    for (int i=0; i<=120; ++i)
+    printf("-");
+    printf("+");
+
+
+    printf("\n| %-30s| %-30s | %-54s |\n","Tu Vung","Loai tu","Nghia cua tu");
+    printf("| %-30s| %-30s | %-54s |\n"," "," "," ");
+    printf("|");
+    for (int i=0; i<=120; ++i)
+    printf("-");
+    printf("|");
+    printf("\n");
+
+    for (int i = 0; i < TABLE_SIZE; ++i){
+
+        if (hashTable[i] == NULL)
+            continue;
+
+        else{
+            Node *temp=hashTable[i];
+            if (strstr(temp->vocab,word)){
+
+                printf("| %-30s| %-30s | %-54s |\n", temp->vocab, temp->type, temp->meaning);
+                printf("|");
+                for (int i=0; i<=30; ++i)
+                    printf("-");
+                printf("|");
+                for (int i=0; i<32; ++i)
+                    printf("-");
+                printf("|");
+                for (int i=0; i<=55; ++i)
+                    printf("-");
+                printf("|");
+                printf("\n");
+                temp = temp->next;
+
+            }
+        }
+    }
+    printf("+");
+    for (int i=0; i<=120; ++i)
+    printf("-");
+    printf("+");
+}
